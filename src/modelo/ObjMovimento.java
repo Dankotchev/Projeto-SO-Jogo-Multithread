@@ -51,14 +51,9 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
             Thread.sleep(1000 / this.velocidade);
 
             this.y += this.dy;
-            if (this.y <= 0) {
-                // mudo o sentido do deslocamento
-                this.dy *= (-1);
-            }
-
-            if (this.y >= 200) {
-                // mudo o sentido do deslocamento
-                this.dy *= (-1);
+            if (this.y >= this.telaJogo.getHeight()) {
+                // Drop tocou o "chão", então ele desaparece
+                this.vida = 0;
             }
 
         } catch (InterruptedException ex) {

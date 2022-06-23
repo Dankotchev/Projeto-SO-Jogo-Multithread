@@ -3,15 +3,11 @@ package modelo;
 import java.awt.Container;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Jogador extends ObjetosTelaGeral {
 
-    private List<Ataque> atq = new ArrayList<>();
     private int dx;
     private int dy;
-    private boolean atacar = true;
 
     public Jogador() {
     }
@@ -25,15 +21,7 @@ public class Jogador extends ObjetosTelaGeral {
         this.dy = dy;
     }
 
-    public List<Ataque> getAtq() {
-        return atq;
-    }
-
-    public void setAtacar(boolean atacar) {
-        this.atacar = atacar;
-    }
-
-    public void keyPressed(KeyEvent evt) {
+        public void keyPressed(KeyEvent evt) {
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_RIGHT:
                 this.dx = 5;
@@ -41,11 +29,9 @@ public class Jogador extends ObjetosTelaGeral {
             case KeyEvent.VK_LEFT:
                 this.dx = -5;
                 break;
-            case KeyEvent.VK_UP:
-                this.dy = -5;
-                break;
-            case KeyEvent.VK_DOWN:
-                this.dy = 5;
+            case KeyEvent.VK_SPACE:
+                // Se tecla espaço precionada ele fará uma especie de salto rápido
+                this.dy = -15;
                 break;
         }
     }
@@ -58,11 +44,9 @@ public class Jogador extends ObjetosTelaGeral {
             case KeyEvent.VK_LEFT:
                 this.dx = 0;
                 break;
-            case KeyEvent.VK_UP:
-                this.dy = 0;
-                break;
-            case KeyEvent.VK_DOWN:
-                this.dy = 0;
+            case KeyEvent.VK_SPACE:
+                // Ao soltar a tecla espaço o jogador volta a cair para a base do jogo
+                this.dy = -20;
                 break;
         }
     }

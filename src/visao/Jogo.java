@@ -7,52 +7,74 @@ import java.util.List;
 import modelo.Jogador;
 import modelo.ObjFixo;
 import modelo.ObjMovimento;
-import java.util.TimerTask;
 
 public class Jogo extends javax.swing.JFrame {
 
     private Jogador jogador;
     private List<ObjFixo> fixos = new ArrayList<>();
     private List<ObjMovimento> drop = new ArrayList<>();
-    
-    private String v [] = {"/recurso/objmov01.png", "/recurso/objmov02.png",
-                "/recurso/objmov03.png"};
-    
-    
+
+    private String diversosDrops[] = {"/recurso/objmov01.png", "/recurso/objmov02.png",
+        "/recurso/objmov03.png"};
+
     public Jogo() {
         initComponents();
         this.setLocationRelativeTo(this);
-        
-        jogador = new Jogador (this.getWidth()/2, this.getHeight(), "/recursos/jogador.png", 3, true, this);
-        
-        // Inserção de 
+
+        jogador = new Jogador(this.getWidth() / 2, this.getHeight(), "/recursos/jogador.png", 3, true, this);
+
+        // Inserção de Elementos Drop, acima da tela de jogo, para cairem "aos poucos"
         for (int i = 0; i < 10; i++) {
-            ObjMovimento om = new ObjMovimento(100, 100, this.randomizarDrop(), 1, true, this);
+            ObjMovimento om = new ObjMovimento(randomizarPosicaoInicial(this.getHeight()),
+                    -100, this.randomizarDrop(), 1, true, this);
             drop.add(om);
             Thread threadDrop = new Thread(om);
             threadDrop.start();
         }
-        
-        
-                
     }
-    
+
+    private int randomizarPosicaoInicial(int largura) {
+        // Uma margem lateral de 50 pixel para cada lado da tela ao criar novos Drops
+        return 50 + ((int) Math.random() * (largura - 100));
+    }
+
     private String randomizarDrop() {
-        int i = (int) (Math.random() * this.v.length);
-        return this.v[i];   
+        int i = (int) (Math.random() * this.diversosDrops.length);
+        return this.diversosDrops[i];
     }
-    
-    
+
+//    // PROTOTIPO DA COLISÃO
+//    public void checarColisao() {
+//        if (!nave.getTiros().isEmpty()) {
+//            for (int i = 0; i < nave.getTiros().size(); i++) { //tm do VETOR DO TIRO 
+//                Tiro tiro = nave.getTiros().get(i);//tira tiro por tiro um por vez
+//                if (tiro.isVisivel()) { // SE P TIRO TIVER VISIVEL
+//                    if (!aliens.isEmpty()) {
+//                        for (int x = 0; x < aliens.size(); x++) {
+//                            Alien a = aliens.get(x);
+//                            if (a.isVisivel()) {//NAO FAZ SENTIDO CONTINUAR O COD SE o alien for invisisvel
+//                                // verificao colicao 
+//                                if (tiro.getBordas().intersects(a.getBordas())) {
+//                                    a.setVida(0);
+//                                    tiro.setVida(0);
+//                                    aliens.remove(a);
+//                                    nave.getTiros().remove(tiro);
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+    // Isso aqui em teoria coloca os objetos na tela
     @Override
     public void paint(Graphics g) {
         Graphics2D graficos = (Graphics2D) g;
 
 //        graficos.drawImage(fundo, 0, 0, null);
-            
-            
-            
-            
-            if (jogador.isVisivel()) {
+        if (jogador.isVisivel()) {
             graficos.drawImage(jogador.getImagem(), jogador.getX(), jogador.getY(), this);
         }
     }
