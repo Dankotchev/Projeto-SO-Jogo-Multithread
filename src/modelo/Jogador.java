@@ -9,19 +9,11 @@ public class Jogador extends ObjetosTelaGeral {
     private int dx;
     private int dy;
 
-    public Jogador() {
+    public Jogador(int x, int y, String caminhoImagem, int vida, boolean visivel) {
+        super(x, y, caminhoImagem, vida, visivel);
     }
 
-    public Jogador(int x, int y, String caminhoImagem, int vida, boolean visivel, Container telaJogo) {
-        super(x, y, caminhoImagem, vida, visivel, telaJogo);
-    }
-
-    public Jogador(int dx, int dy) {
-        this.dx = dx;
-        this.dy = dy;
-    }
-
-        public void keyPressed(KeyEvent evt) {
+    public void keyPressed(KeyEvent evt) {
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_RIGHT:
                 this.dx = 5;
@@ -36,7 +28,7 @@ public class Jogador extends ObjetosTelaGeral {
         }
     }
 
-    public void keyRelessed(KeyEvent evt) {
+    public void keyReleased(KeyEvent evt) {
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_RIGHT:
                 this.dx = 0;
@@ -58,15 +50,15 @@ public class Jogador extends ObjetosTelaGeral {
         if (this.getX() < 0) {
             this.setX(0);
         }
-        if (this.getX() > super.telaJogo.getWidth()) {
-            this.setX(this.telaJogo.getWidth());
+        if (this.getX() > 600) {
+            this.setX(600);
         }
 
-        if (this.getY() < 100) {
-            this.setY(100);
+        if (this.getY() < 300) {
+            this.setY(300);
         }
-        if (this.getY() > super.telaJogo.getHeight()) {
-            this.setY(this.telaJogo.getHeight());
+        if (this.getY() > 800) {
+            this.setY(800);
         }
 
     }

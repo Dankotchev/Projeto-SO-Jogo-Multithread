@@ -14,11 +14,9 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
     public ObjMovimento() {
     }
 
-    public ObjMovimento(int x, int y, String caminhoImagem, int vida, boolean visivel, Container telaJogo) {
-        super(x, y, caminhoImagem, vida, visivel, telaJogo);
+    public ObjMovimento(int x, int y, String caminhoImagem, int vida, boolean visivel) {
+        super(x, y, caminhoImagem, vida, visivel);
     }
-
-
 
     @Override
     public void run() {
@@ -31,18 +29,20 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
             }
             sortearTudo();
         }
-        super.visivel = false;
+        this.setVisible(false);
     }
 
     public void sortearTudo() {
-        this.distancia = (int) (Math.random() * 300) + 100;
 
+        // Poderá ser necessário alterar esse comportamento do andar (distância e acrestimo)
+        this.distancia = (int) (Math.random() * 300) + 100;
         do {
             this.dy = (int) (Math.random() * 5) - 2;
         } while (this.dy == 0);
-
-        this.velocidade = (int) (Math.random() * 30) + 50;
         this.acrescimoDist = (int) Math.sqrt(Math.pow(this.dx, 2));
+
+        // Seleciona a velocidade do movimento atual
+        this.velocidade = (int) (Math.random() * 30) + 50;
     }
 
     private void andar() {
@@ -51,7 +51,7 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
             Thread.sleep(1000 / this.velocidade);
 
             this.y += this.dy;
-            if (this.y >= this.telaJogo.getHeight()) {
+            if (this.y >= 900) {
                 // Drop tocou o "chão", então ele desaparece
                 this.vida = 0;
             }

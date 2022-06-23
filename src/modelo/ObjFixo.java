@@ -1,26 +1,18 @@
 package modelo;
 
-import java.awt.Container;
-import java.util.Random;
-
 public class ObjFixo extends ObjetosTelaGeral implements Runnable {
 
-    public ObjFixo() {
+    public ObjFixo(String caminhoImagem, int vida, boolean visivel) {
+        this.x = (int) (Math.random() * 800);
+        this.y = (int) (Math.random() * 800);
+        this.caminhoImagem = caminhoImagem;
+        this.vida = vida;
+        this.setVisible(visivel);
     }
-
-    public ObjFixo(int x, int y, String caminhoImagem, int vida, boolean visivel, Container telaJogo) {
-        super(x, y, caminhoImagem, vida, visivel, telaJogo);
-        Random rand = new Random();
-        this.x = rand.nextInt(800);
-        this.y = rand.nextInt(800);
-    }
-
-
 
     @Override
     public void run() {
         while (true) {
-
         }
     }
 }
