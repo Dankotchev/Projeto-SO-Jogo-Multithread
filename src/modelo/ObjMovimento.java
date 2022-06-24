@@ -5,8 +5,8 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
     private int dx;
     private int dy;
     private int velocidade;
-    private int acrescimoDist;
-    private int distancia = 10;
+//    private int acrescimoDist;
+//    private int distancia;
 
     public ObjMovimento(int x, int y, String caminhoImagem, int vida, boolean visivel) {
         super(x, y, caminhoImagem, vida, visivel);
@@ -15,13 +15,10 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
     @Override
     public void run() {
         while (vida != 0) {
-            int soma = 0;
-            while (soma < this.distancia) {
-                soma += this.acrescimoDist;
-                movimentarObj();
 
-            }
             sortearTudo();
+            movimentarObj();
+
         }
         this.setVisible(false);
     }
@@ -29,14 +26,15 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
     public void sortearTudo() {
 
         // Poderá ser necessário alterar esse comportamento do andar (distância e acrestimo)
-        this.distancia = (int) (Math.random() * 300) + 100;
+//        this.distancia = (int) (Math.random() * 300) + 100;
         do {
             this.dy = (int) (Math.random() * 5) - 2;
         } while (this.dy == 0);
-        this.acrescimoDist = (int) Math.sqrt(Math.pow(this.dx, 2));
+//        this.acrescimoDist = (int) Math.sqrt(Math.pow(this.dx, 2));
 
         // Seleciona a velocidade do movimento atual
         this.velocidade = (int) (Math.random() * 30) + 50;
+
     }
 
     private void movimentarObj() {
@@ -51,6 +49,8 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
 
         } catch (InterruptedException ex) {
             System.out.println("Erro");
+        } catch (ArithmeticException ex) {
+            System.out.println(ex.toString());
         }
     }
 
