@@ -1,10 +1,14 @@
 package modelo;
 
+import visao.TelaJogo;
+
 public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
 
     private int dx;
     private int dy;
     private int velocidade;
+    private int distancia;
+    private int acrescimoDist;
 
     public ObjMovimento(int x, int y, String caminhoImagem, int vida, boolean visivel) {
         super(x, y, caminhoImagem, vida, visivel);
@@ -13,29 +17,30 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
     @Override
     public void run() {
         while (vida != 0) {
-
+            int soma = 0;
+            while (soma < this.distancia) {
+                soma += this.acrescimoDist;
+                this.movimentarObj();
+            }
             sortearTudo();
-            movimentarObj();
-
         }
         this.setVisible(false);
     }
 
     public void sortearTudo() {
+        this.distancia = (int) (Math.random() * 300) + 200;
 
-        // Poderá ser necessário alterar esse comportamento do andar (distância e acrestimo)
-//        this.distancia = (int) (Math.random() * 300) + 100;
         do {
-            this.dy = (int) (Math.random() * 5);
-        } while (this.dy >= 0);
-//        this.acrescimoDist = (int) Math.sqrt(Math.pow(this.dx, 2));
+            this.dx = (int) (Math.random() * 3);
+            this.dy = (int) (Math.random() * 3);
+        } while (this.dx == 0 && this.dy == 0);
 
-        // Seleciona a velocidade do movimento atual
-        this.velocidade = (int) (Math.random() * 30) + 50;
-
+        this.velocidade = (int) (Math.random() * 30) + 30;
+        this.acrescimoDist = (int) Math.sqrt(Math.pow(this.dx, 2)
+                + Math.pow(this.dy, 2));
     }
 
-    private void movimentarObj() {
+    private  void movimentarObj() {
         try {
             Thread.sleep(1000 / this.velocidade);
 

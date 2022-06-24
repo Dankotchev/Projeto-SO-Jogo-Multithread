@@ -47,9 +47,9 @@ public class TelaJogo extends JPanel implements ActionListener {
 
         // Inserção de Elementos Drop, acima da tela de jogo, para cairem "aos poucos"
 //        randomizarPosicaoInicial(this.getHeight())
-        for (int i = 0; i < 1; i++) {
-            ObjMovimento drop = new ObjMovimento(randomizarPosicaoInicial(600),
-                    400, this.randomizarDrop(), 1, true);
+        for (int i = 0; i < 5; i++) {
+            int x = (int) (Math.random() * 500) + 50;
+            ObjMovimento drop = new ObjMovimento(x, -100, this.randomizarDrop(), 1, true);
             listaObjMovimento.add(drop);
             Thread threadDrop = new Thread(drop);
             threadDrop.start();
@@ -118,7 +118,7 @@ public class TelaJogo extends JPanel implements ActionListener {
 
         g.dispose();
     }
-
+    
     public void colisao() {
 
         if (!listaObjMovimento.isEmpty()) {
