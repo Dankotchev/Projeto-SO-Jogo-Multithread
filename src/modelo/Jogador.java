@@ -45,17 +45,17 @@ public class Jogador extends ObjetosTelaGeral {
         this.setLocation(this.getX() + dx, this.getY() + dy);
 
         if (this.getX() < 0) {
-            this.setLocation(0,this.getY());
+            this.setLocation(0, this.getY());
         }
-        if (this.getX() > 600) {
-            this.setLocation(600,this.getY());
+        if (this.getX() > (600 - this.imagem.getWidth(this))) {
+            this.setLocation(600 - this.imagem.getWidth(this), this.getY());
         }
 
         if (this.getY() < 300) {
-            this.setLocation(this.getX(),300);
+            this.setLocation(this.getX(), 300);
         }
-        if (this.getY() > 700) {
-            this.setLocation(this.getX(),700);
+        if (this.getY() > (800 - this.imagem.getHeight(this))) {
+            this.setLocation(this.getX(), 800 - this.imagem.getHeight(this));
         }
 
     }

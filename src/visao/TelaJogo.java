@@ -30,7 +30,10 @@ public class TelaJogo extends JPanel implements ActionListener {
     // Vetor de imagens para serem sorteadas na inicialização
     private String diversosDrops[] = {
         "/recurso/objmov01.png", "/recurso/objmov02.png",
-        "/recurso/objmov03.png"};
+        "/recurso/objmov03.png", "/recurso/objmov04.png",
+        "/recurso/objmov05.png", "/recurso/objmov06.png",
+        "/recurso/objmov07.png", "/recurso/objmov08.png",
+        "/recurso/objmov09.png", "/recurso/objmov10.png"};
 
     private Timer timer;
 
@@ -46,10 +49,10 @@ public class TelaJogo extends JPanel implements ActionListener {
         jogador = new Jogador(this.getWidth() / 2, 700, "/recurso/jogador.png", 1, true);
 
         // Inserção de Elementos Drop, acima da tela de jogo, para cairem "aos poucos"
-//        randomizarPosicaoInicial(this.getHeight())
-        for (int i = 0; i < 5; i++) {
+        // Elementos posicionados horizontalmente de forma aleatória na tela de jodo
+        for (int i = 0; i < 10; i++) {
             int x = (int) (Math.random() * 500) + 50;
-            ObjMovimento drop = new ObjMovimento(x, -100, this.randomizarDrop(), 1, true);
+            ObjMovimento drop = new ObjMovimento(x, -150, this.randomizarDrop(), 1, true);
             listaObjMovimento.add(drop);
             Thread threadDrop = new Thread(drop);
             threadDrop.start();
@@ -67,11 +70,6 @@ public class TelaJogo extends JPanel implements ActionListener {
         timer.start();
 
         addKeyListener(new Teclado());
-    }
-
-    private int randomizarPosicaoInicial(int largura) {
-        // Uma margem lateral de 50 pixel para cada lado da tela ao criar novos Drops
-        return 50 + ((int) Math.random() * (largura - 100));
     }
 
     private String randomizarDrop() {
@@ -118,7 +116,7 @@ public class TelaJogo extends JPanel implements ActionListener {
 
         g.dispose();
     }
-    
+
     public void colisao() {
 
         if (!listaObjMovimento.isEmpty()) {
