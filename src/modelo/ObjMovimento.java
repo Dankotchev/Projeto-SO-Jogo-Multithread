@@ -5,8 +5,6 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
     private int dx;
     private int dy;
     private int velocidade;
-//    private int acrescimoDist;
-//    private int distancia;
 
     public ObjMovimento(int x, int y, String caminhoImagem, int vida, boolean visivel) {
         super(x, y, caminhoImagem, vida, visivel);
@@ -28,8 +26,8 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
         // Poderá ser necessário alterar esse comportamento do andar (distância e acrestimo)
 //        this.distancia = (int) (Math.random() * 300) + 100;
         do {
-            this.dy = (int) (Math.random() * 5) - 2;
-        } while (this.dy == 0);
+            this.dy = (int) (Math.random() * 5);
+        } while (this.dy >= 0);
 //        this.acrescimoDist = (int) Math.sqrt(Math.pow(this.dx, 2));
 
         // Seleciona a velocidade do movimento atual
@@ -41,17 +39,14 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
         try {
             Thread.sleep(1000 / this.velocidade);
 
-            this.y += this.dy;
-            if (this.y >= 900) {
+            this.setLocation(this.getX(), this.getY() + this.dy);
+            if (this.getY() >= 900) {
                 // Drop tocou o "chão", então ele desaparece
-                this.vida = 0;
+                this.setVida(0);
             }
 
         } catch (InterruptedException ex) {
             System.out.println("Erro");
-        } catch (ArithmeticException ex) {
-            System.out.println(ex.toString());
         }
     }
-
 }

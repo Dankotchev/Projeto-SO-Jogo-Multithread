@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -44,13 +43,13 @@ public class TelaJogo extends JPanel implements ActionListener {
         fundo = new ImageIcon(getClass().getResource("/recurso/fundo.png")).getImage();
         vitoria = new Imagem(40, 140, "/recurso/vitoria.png", 0, true);
         derrota = new Imagem(40, 140, "/recurso/derrota.png", 0, true);
-        jogador = new Jogador(this.getWidth() / 2, this.getHeight(), "/recurso/jogador.png", 1, true);
+        jogador = new Jogador(this.getWidth() / 2, 700, "/recurso/jogador.png", 1, true);
 
         // Inserção de Elementos Drop, acima da tela de jogo, para cairem "aos poucos"
 //        randomizarPosicaoInicial(this.getHeight())
         for (int i = 0; i < 1; i++) {
-            ObjMovimento drop = new ObjMovimento(350,
-                    -100, this.randomizarDrop(), 1, true);
+            ObjMovimento drop = new ObjMovimento(randomizarPosicaoInicial(600),
+                    400, this.randomizarDrop(), 1, true);
             listaObjMovimento.add(drop);
             Thread threadDrop = new Thread(drop);
             threadDrop.start();
@@ -82,7 +81,7 @@ public class TelaJogo extends JPanel implements ActionListener {
 
     // Isso aqui em teoria coloca os objetos na tela
     @Override
-    public void paint(Graphics g) {
+    public synchronized void paint(Graphics g) {
         Graphics2D graficos = (Graphics2D) g;
 
         // Colocar a imagem de fundo na tela
@@ -132,9 +131,9 @@ public class TelaJogo extends JPanel implements ActionListener {
                         om.setVida(0);
                         om.setVisible(false);
                         listaObjMovimento.remove(om);
-                    } // Não houve colisão com o jogador, mas um Objeto em Movimento atingiu o fim da tela
-                    // O objeto fica invisivel e o jogador perde uma vida (ou o jogo)
-                    else if (om.getX() >= 900) {
+                    } else if (om.getX() >= 900) {
+                        // Não houve colisão com o jogador, mas um Objeto em Movimento atingiu o fim da tela
+                        // O objeto fica invisivel e o jogador perde uma vida (ou o jogo)
                         om.setVisible(false);
                         this.jogador.setVida(0);
                     }

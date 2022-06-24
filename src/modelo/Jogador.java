@@ -14,14 +14,14 @@ public class Jogador extends ObjetosTelaGeral {
     public void keyPressed(KeyEvent evt) {
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_RIGHT:
-                this.dx = 5;
+                this.dx = +1;
                 break;
             case KeyEvent.VK_LEFT:
-                this.dx = -5;
+                this.dx = -1;
                 break;
             case KeyEvent.VK_SPACE:
                 // Se tecla espaço precionada ele fará uma especie de salto rápido
-                this.dy = -15;
+                this.dy = -3;
                 break;
         }
     }
@@ -36,27 +36,26 @@ public class Jogador extends ObjetosTelaGeral {
                 break;
             case KeyEvent.VK_SPACE:
                 // Ao soltar a tecla espaço o jogador volta a cair para a base do jogo
-                this.dy = -20;
+                this.dy = +4;
                 break;
         }
     }
 
     public void atualizarPosicao() {
-        this.setX(dx);
-        this.setY(dy);
+        this.setLocation(this.getX() + dx, this.getY() + dy);
 
         if (this.getX() < 0) {
-            this.setX(0);
+            this.setLocation(0,this.getY());
         }
         if (this.getX() > 600) {
-            this.setX(600);
+            this.setLocation(600,this.getY());
         }
 
         if (this.getY() < 300) {
-            this.setY(300);
+            this.setLocation(this.getX(),300);
         }
-        if (this.getY() > 800) {
-            this.setY(800);
+        if (this.getY() > 700) {
+            this.setLocation(this.getX(),700);
         }
 
     }

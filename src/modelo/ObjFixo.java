@@ -8,7 +8,9 @@ public class ObjFixo extends ObjetosTelaGeral implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        synchronized (this) {
+            while (true) {
+            }
         }
     }
 }
