@@ -42,7 +42,7 @@ public class TelaJogo extends JPanel implements ActionListener {
         jogador = new Jogador(this.getWidth() / 2, this.getHeight(), "/recurso/jogador.png", 3, true);
 
         // Inserção de Elementos Drop, acima da tela de jogo, para cairem "aos poucos"
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1; i++) {
             ObjMovimento drop = new ObjMovimento(randomizarPosicaoInicial(this.getHeight()),
                     -100, this.randomizarDrop(), 1, true);
             listaObjMovimento.add(drop);
@@ -52,7 +52,8 @@ public class TelaJogo extends JPanel implements ActionListener {
 
         // Inserção dos Elementos Fixos na tela
         for (int i = 0; i < 10; i++) {
-            ObjFixo fixo = new ObjFixo("/recurso/objfixo.png", 1, true);
+            ObjFixo fixo = new ObjFixo((int) (Math.random() * 800), (int) (Math.random() * 800),
+                    "/recurso/objfixo.png", 1, true);
             listaObjFixo.add(fixo);
         }
 
@@ -136,12 +137,12 @@ public class TelaJogo extends JPanel implements ActionListener {
         repaint();
     }
 
-    public class Teclado extends KeyAdapter implements KeyListener {
+    public class Teclado extends KeyAdapter implements ActionListener {
 
         private Timer timer;
 
         public Teclado() {
-            timer = new Timer(500, (ActionListener) this);
+            timer = new Timer(500, this);
             timer.start();
         }
 
@@ -153,6 +154,13 @@ public class TelaJogo extends JPanel implements ActionListener {
         @Override
         public void keyReleased(KeyEvent e) {
             jogador.keyReleased(e);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            jogador.atualizarPosicao();
+//        colisao();
+            repaint();
         }
     }
 }

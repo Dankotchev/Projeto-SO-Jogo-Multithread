@@ -1,7 +1,5 @@
 package modelo;
 
-import java.awt.Container;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
 
 public class Jogador extends ObjetosTelaGeral {

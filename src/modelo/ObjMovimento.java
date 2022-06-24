@@ -1,18 +1,12 @@
 package modelo;
 
-import java.awt.Container;
-import java.awt.Image;
-
 public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
 
     private int dx;
     private int dy;
     private int velocidade;
     private int acrescimoDist;
-    private int distancia;
-
-    public ObjMovimento() {
-    }
+    private int distancia = 10;
 
     public ObjMovimento(int x, int y, String caminhoImagem, int vida, boolean visivel) {
         super(x, y, caminhoImagem, vida, visivel);
@@ -24,7 +18,7 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
             int soma = 0;
             while (soma < this.distancia) {
                 soma += this.acrescimoDist;
-                andar();
+                movimentarObj();
 
             }
             sortearTudo();
@@ -45,9 +39,8 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
         this.velocidade = (int) (Math.random() * 30) + 50;
     }
 
-    private void andar() {
+    private void movimentarObj() {
         try {
-            // faço a thread do objeto aguardar antes de andar de novo
             Thread.sleep(1000 / this.velocidade);
 
             this.y += this.dy;

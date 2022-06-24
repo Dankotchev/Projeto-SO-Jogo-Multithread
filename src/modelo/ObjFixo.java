@@ -2,12 +2,8 @@ package modelo;
 
 public class ObjFixo extends ObjetosTelaGeral implements Runnable {
 
-    public ObjFixo(String caminhoImagem, int vida, boolean visivel) {
-        this.x = (int) (Math.random() * 800);
-        this.y = (int) (Math.random() * 800);
-        this.caminhoImagem = caminhoImagem;
-        this.vida = vida;
-        this.setVisible(visivel);
+    public ObjFixo(int x, int y, String caminhoImagem, int vida, boolean visivel) {
+        super(x, y, caminhoImagem, vida, visivel);
     }
 
     @Override
