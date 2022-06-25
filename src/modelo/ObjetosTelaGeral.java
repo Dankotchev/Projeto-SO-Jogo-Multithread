@@ -4,19 +4,22 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class ObjetosTelaGeral extends JLabel{
+public class ObjetosTelaGeral extends JLabel {
 
     protected Image imagem;
     protected String caminhoImagem;
-    protected int vida;
 
-    public ObjetosTelaGeral(int x, int y, String caminhoImagem, int vida,
-            boolean visivel) {
+    // 
+    protected Estado vida;
+
+    public ObjetosTelaGeral(int x, int y, String caminhoImagem, boolean visivel) {
         this.setLocation(x, y);
         this.caminhoImagem = caminhoImagem;
-        this.vida = vida;
+        this.vida = Estado.VIVO;
         this.setVisible(visivel);
         this.imagem = new ImageIcon(getClass().getResource(caminhoImagem)).getImage();
+        this.setBounds(x, y, this.imagem.getWidth(this), this.imagem.getHeight(this));
+
     }
 
     public Image getImagem() {
@@ -35,11 +38,17 @@ public class ObjetosTelaGeral extends JLabel{
         this.caminhoImagem = caminhoImagem;
     }
 
-    public int getVida() {
+    public Estado getVida() {
         return vida;
     }
 
-    public void setVida(int vida) {
+    public void setVida(Estado vida) {
         this.vida = vida;
+    }
+
+    public enum Estado {
+        VIVO,
+        MORTO,
+        FORA
     }
 }

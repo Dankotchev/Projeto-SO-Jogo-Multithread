@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -16,6 +17,7 @@ import modelo.Imagem;
 import modelo.Jogador;
 import modelo.ObjFixo;
 import modelo.ObjMovimento;
+import modelo.ObjetosTelaGeral;
 
 public class TelaJogo extends JPanel implements ActionListener {
 
@@ -24,8 +26,8 @@ public class TelaJogo extends JPanel implements ActionListener {
     private Imagem vitoria;
     private Imagem derrota;
     private Jogador jogador;
+    private List<ObjMovimento> listaObjMovimento = Collections.synchronizedList(new ArrayList<>());
     private List<ObjFixo> listaObjFixo = new ArrayList<>();
-    private List<ObjMovimento> listaObjMovimento = new ArrayList<>();
 
     // Vetor de imagens para serem sorteadas na inicialização
     private String diversosDrops[] = {
@@ -44,15 +46,15 @@ public class TelaJogo extends JPanel implements ActionListener {
 
         // Inicializando elementos sem variações ou multiplos
         fundo = new ImageIcon(getClass().getResource("/recurso/fundo.png")).getImage();
-        vitoria = new Imagem(40, 140, "/recurso/vitoria.png", 0, true);
-        derrota = new Imagem(40, 140, "/recurso/derrota.png", 0, true);
-        jogador = new Jogador(this.getWidth() / 2, 700, "/recurso/jogador.png", 1, true);
+        vitoria = new Imagem(44, 194, "/recurso/vitoria.png", true);
+        derrota = new Imagem(44, 194, "/recurso/derrota.png", true);
+        jogador = new Jogador(250, 700, "/recurso/jogador.png", true);
 
         // Inserção de Elementos Drop, acima da tela de jogo, para cairem "aos poucos"
         // Elementos posicionados horizontalmente de forma aleatória na tela de jodo
         for (int i = 0; i < 10; i++) {
             int x = (int) (Math.random() * 500) + 50;
-            ObjMovimento drop = new ObjMovimento(x, -150, this.randomizarDrop(), 1, true);
+            ObjMovimento drop = new ObjMovimento(x, -150, this.randomizarDrop(), true);
             listaObjMovimento.add(drop);
             Thread threadDrop = new Thread(drop);
             threadDrop.start();
@@ -62,7 +64,7 @@ public class TelaJogo extends JPanel implements ActionListener {
         for (int i = 0; i < 10; i++) {
             int x = (int) (Math.random() * 800);
             int y = (int) (Math.random() * 800);
-            ObjFixo fixo = new ObjFixo(x, y, "/recurso/objfixo.png", 1, true);
+            ObjFixo fixo = new ObjFixo(x, y, "/recurso/objfixo.png", true);
             listaObjFixo.add(fixo);
         }
 
@@ -79,7 +81,7 @@ public class TelaJogo extends JPanel implements ActionListener {
 
     // Isso aqui em teoria coloca os objetos na tela
     @Override
-    public synchronized void paint(Graphics g) {
+    public void paint(Graphics g) {
         Graphics2D graficos = (Graphics2D) g;
 
         // Colocar a imagem de fundo na tela
@@ -109,44 +111,68 @@ public class TelaJogo extends JPanel implements ActionListener {
         }
 
         // Caso as vidas do jogador acabe, o mesmo perde o jogo
-        if (this.jogador.getVida() == 0) {
+        if (this.jogador.getVida() == ObjetosTelaGeral.Estado.MORTO) {
             graficos.drawImage(this.derrota.getImagem(),
                     this.derrota.getX(), this.derrota.getY(), this);
+        }
+
+        // Caso todos os Drops sejam pegos
+        int i = 0;
+        int tm = listaObjMovimento.size();
+        for (ObjMovimento om : listaObjMovimento) {
+            if (om.getVida() == ObjetosTelaGeral.Estado.MORTO) {
+                i++;
+            }
+        }
+        if (i == tm) {
+            graficos.drawImage(this.vitoria.getImagem(),
+                    this.vitoria.getX(), this.vitoria.getY(), this);
+        }
+
+        if (listaObjMovimento.isEmpty()) {
+            graficos.drawImage(this.vitoria.getImagem(),
+                    this.vitoria.getX(), this.vitoria.getY(), this);
         }
 
         g.dispose();
     }
 
     public void colisao() {
+        synchronized (listaObjMovimento) {
+            if (!listaObjMovimento.isEmpty()) {
+                for (ObjMovimento om : listaObjMovimento) {
+                    int i = listaObjMovimento.indexOf(om);
+                    //  1º Para cada Objeto em Movimento, verificar se está visivel na tela 
+                    // 2º Verificar se o Objeto em Movimento colide no objeto Jogador
+                    if (om.isVisible()) {
+                        if (om.getBounds().intersects(this.jogador.getBounds())) {
+                            // Houve a colisão com o Jogador
+                            // Remover o Objeto em Movimento da lista
+                            om.setVisible(false);
+                            om.setVida(ObjetosTelaGeral.Estado.MORTO);
+                            System.out.println("Objeto Morto");
 
-        if (!listaObjMovimento.isEmpty()) {
-            for (ObjMovimento om : listaObjMovimento) {
-                //  1º Para cada Objeto em Movimento, verificar se está visivel na tela 
-                // 2º Verificar se o Objeto em Movimento colide no objeto Jogador
-                if (om.isVisible()) {
-                    if (om.getBounds().intersects(this.jogador.getBounds())) {
-                        // Houve a colisão com o Jogador
-                        om.setVida(0);
-                        om.setVisible(false);
-                        listaObjMovimento.remove(om);
-                    } else if (om.getX() >= 900) {
-                        // Não houve colisão com o jogador, mas um Objeto em Movimento atingiu o fim da tela
-                        // O objeto fica invisivel e o jogador perde uma vida (ou o jogo)
-                        om.setVisible(false);
-                        this.jogador.setVida(0);
+//                            listaObjMovimento.remove(i);
+                        } else if (om.getY() >= (900 - om.getImagem().getHeight(this))) {
+                            // Não houve colisão com o jogador, mas um Objeto em Movimento atingiu o fim da tela
+                            // O objeto fica invisivel e o jogador perde uma vida (ou o jogo)
+                            om.setVisible(false);
+                            this.jogador.setVida(ObjetosTelaGeral.Estado.MORTO);
+                        }
                     }
                 }
-            }
 
+            }
         }
     }
 
     @Override
-    public void actionPerformed(ActionEvent ae
+    public void actionPerformed(ActionEvent actEvt
     ) {
         jogador.atualizarPosicao();
         colisao();
         repaint();
+
     }
 
     public class Teclado extends KeyAdapter implements ActionListener {
@@ -154,7 +180,7 @@ public class TelaJogo extends JPanel implements ActionListener {
         private Timer timer;
 
         public Teclado() {
-            timer = new Timer(500, this);
+            timer = new Timer(1000, this);
             timer.start();
         }
 
@@ -171,7 +197,7 @@ public class TelaJogo extends JPanel implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ae) {
             jogador.atualizarPosicao();
-//        colisao();
+            colisao();
             repaint();
         }
     }

@@ -7,8 +7,8 @@ public class Jogador extends ObjetosTelaGeral {
     private int dx;
     private int dy;
 
-    public Jogador(int x, int y, String caminhoImagem, int vida, boolean visivel) {
-        super(x, y, caminhoImagem, vida, visivel);
+    public Jogador(int x, int y, String caminhoImagem, boolean visivel) {
+        super(x, y, caminhoImagem, visivel);
     }
 
     public void keyPressed(KeyEvent evt) {

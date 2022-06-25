@@ -10,13 +10,13 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
     private int distancia;
     private int acrescimoDist;
 
-    public ObjMovimento(int x, int y, String caminhoImagem, int vida, boolean visivel) {
-        super(x, y, caminhoImagem, vida, visivel);
+    public ObjMovimento(int x, int y, String caminhoImagem, boolean visivel) {
+        super(x, y, caminhoImagem, visivel);
     }
 
     @Override
     public void run() {
-        while (vida != 0) {
+        while (this.vida == Estado.VIVO) {
             int soma = 0;
             while (soma < this.distancia) {
                 soma += this.acrescimoDist;
@@ -47,7 +47,7 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
             this.setLocation(this.getX(), this.getY() + this.dy);
             if (this.getY() >= 900) {
                 // Drop tocou o "chão", então ele desaparece
-                this.setVida(0);
+                this.setVida(Estado.FORA);
             }
 
         } catch (InterruptedException ex) {
