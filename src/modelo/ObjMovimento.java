@@ -35,7 +35,7 @@ public class ObjMovimento extends ObjetosTelaGeral implements Runnable {
             this.dy = (int) (Math.random() * 3);
         } while (this.dx == 0 && this.dy == 0);
 
-        this.velocidade = (int) (Math.random() * 30) + 30;
+        this.velocidade = (int) (Math.random() * 30) + 70;
         this.acrescimoDist = (int) Math.sqrt(Math.pow(this.dx, 2)
                 + Math.pow(this.dy, 2));
     }
