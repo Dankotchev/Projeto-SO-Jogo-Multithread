@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -70,8 +69,8 @@ public class TelaJogo extends JPanel implements ActionListener {
 
         // Inserção dos Elementos Fixos na tela
         for (int i = 0; i < 10; i++) {
-            int x = (int) (Math.random() * 800);
-            int y = (int) (Math.random() * 800);
+            int x = (int) (Math.random() * 600);
+            int y = (int) (Math.random() * 600);
             ObjFixo fixo = new ObjFixo(x, y, randomizarFixo(), true);
             listaObjFixo.add(fixo);
         }
